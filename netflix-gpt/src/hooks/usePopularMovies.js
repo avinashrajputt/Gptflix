@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { API_OPTIONS } from "../utils/constants";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { addPopularMovies } from "../utils/moviesSlice";
 
 
@@ -9,7 +9,7 @@ const usePopularMovies = () => {
      //fectch data from tmbd api and update the store
   const dispatch = useDispatch();
 
-  const getPopularMovies = async () => {
+  const getPopularMovies = useCallback(async () => {
     try {
       const data = await fetch(
         'https://api.themoviedb.org/3/movie/popular?page=1',
@@ -29,12 +29,11 @@ const usePopularMovies = () => {
     } catch (error) {
       console.error('Error fetching popular movies:', error);
     }
-  };
+  }, [dispatch]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     getPopularMovies();
-  }, [dispatch]);
+  }, [getPopularMovies]);
 }
 
 export default usePopularMovies;

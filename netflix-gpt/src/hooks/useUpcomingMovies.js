@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { API_OPTIONS } from "../utils/constants";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { addUpcomingMovies } from "../utils/moviesSlice";
 
 
@@ -9,7 +9,7 @@ const useUpcomingMovies = () => {
      //fetch data from tmdb api and update the store
   const dispatch = useDispatch();
 
-  const getUpcomingMovies = async () => {
+  const getUpcomingMovies = useCallback(async () => {
     try {
       const data = await fetch(
         'https://api.themoviedb.org/3/movie/upcoming?page=1',
@@ -29,12 +29,11 @@ const useUpcomingMovies = () => {
     } catch (error) {
       console.error('Error fetching upcoming movies:', error);
     }
-  };
+  }, [dispatch]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     getUpcomingMovies();
-  }, [dispatch]);
+  }, [getUpcomingMovies]);
 }
 
 export default useUpcomingMovies;

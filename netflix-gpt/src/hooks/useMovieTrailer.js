@@ -1,13 +1,13 @@
 import { useDispatch } from "react-redux";
 import { API_OPTIONS } from "../utils/constants";
 import { addTrailerVideo } from "../utils/moviesSlice";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 
 const useMovieTrailer = (movieId) => {
     const dispatch = useDispatch();
 
     //fetch trailer video
-     const getMovieVideos = async () => {
+    const getMovieVideos = useCallback(async () => {
        try {
         const data = await fetch(
             "https://api.themoviedb.org/3/movie/"
@@ -34,12 +34,11 @@ const useMovieTrailer = (movieId) => {
        } catch (error) {
          console.error('Error fetching movie videos:', error);
        }
-     };
+    }, [movieId, dispatch]);
 
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-     useEffect(() => {
+    useEffect(() => {
         getMovieVideos();
-     }, [movieId, dispatch]);
+    }, [getMovieVideos]);
 
 }
 

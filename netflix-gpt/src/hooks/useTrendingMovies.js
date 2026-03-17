@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { API_OPTIONS } from "../utils/constants";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { addTrendingMovies } from "../utils/moviesSlice";
 
 
@@ -9,7 +9,7 @@ const useTrendingMovies = () => {
      //fetch data from tmdb api and update the store
   const dispatch = useDispatch();
 
-  const getTrendingMovies = async () => {
+  const getTrendingMovies = useCallback(async () => {
     try {
       const data = await fetch(
         'https://api.themoviedb.org/3/trending/movie/week?page=1',
@@ -29,12 +29,11 @@ const useTrendingMovies = () => {
     } catch (error) {
       console.error('Error fetching trending movies:', error);
     }
-  };
+  }, [dispatch]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     getTrendingMovies();
-  }, [dispatch]);
+  }, [getTrendingMovies]);
 }
 
 export default useTrendingMovies;
