@@ -3,6 +3,8 @@ import Header from './Header';
 import MainContainer from './MainContainer';
 import SecondaryContainer from './SecondaryContainer';
 import usePopularMovies from '../hooks/usePopularMovies';
+import useTrendingMovies from '../hooks/useTrendingMovies';
+import useUpcomingMovies from '../hooks/useUpcomingMovies';
 import GptSearch from './GptSearch';
 import { useSelector } from 'react-redux';
 
@@ -12,9 +14,11 @@ export const Browse = () => {
 
    useNowPlayingMovies();
    usePopularMovies();
+   useTrendingMovies();
+   useUpcomingMovies();
 
   return (
-    <div>
+    <div className="bg-black min-h-screen">
       <Header />
       {showGptSearch ? (
         <GptSearch />

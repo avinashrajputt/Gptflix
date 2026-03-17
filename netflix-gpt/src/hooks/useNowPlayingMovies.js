@@ -10,17 +10,31 @@ const useNowPlayingMovies = () => {
   const dispatch = useDispatch();
 
   const getNowPlayingMovies = async () => {
-        const data = await fetch(
-          'https://api.themoviedb.org/3/movie/now_playing?page=1',
-          API_OPTIONS
-        );
+    try {
+      const data = await fetch(
+        'https://api.themoviedb.org/3/movie/now_playing?page=1',
+        API_OPTIONS
+      );
+      
+      if (!data.ok) {
+        console.error('TMDB API Error:', data.status, data.statusText);
+        return;
+      }
+      
       const json = await data.json();
-      dispatch(addNowPlayingMovies(json.results));
-     };
+      
+      if (json.results) {
+        dispatch(addNowPlayingMovies(json.results));
+      }
+    } catch (error) {
+      console.error('Error fetching now playing movies:', error);
+    }
+  };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     getNowPlayingMovies();
-  }, []);
+  }, [dispatch]);
 }
 
 export default useNowPlayingMovies;
